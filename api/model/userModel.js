@@ -7,10 +7,6 @@ const userSchema = new Schema({
         indexes: true,
         unique: true
     },
-    password: {
-        type: String,
-        required: true
-    },
     name: {
         type: String,
         required: true
@@ -36,7 +32,8 @@ const userSchema = new Schema({
         default: false
     },
     email: {
-        type: String
+        type: String,
+        require: true
     }
 })
 
