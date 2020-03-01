@@ -177,7 +177,8 @@ exports.confirmLoan = (req, res, next) => {
 
     if (typeof is_accepted === "boolean") {
         Loan.findByIdAndUpdate(id, {
-            is_accepted: is_accepted
+            is_accepted: is_accepted,
+            status: is_accepted ? "diterima" : "ditolak"
         }).lean().then(result => {
             if (!result) throw ('invalid request')
 

@@ -8,7 +8,7 @@ const {
 router.post('/register', userController.user_register);
 router.post('/login', userController.user_login);
 router.get('/', checkToken, checkUser, userController.users_get);
-router.get('/:id', userController.user_detail);
-router.delete('/:id', userController.user_delete);
+router.get('/:id', checkToken, userController.user_detail);
+router.delete('/:id', checkToken, checkUser, userController.user_delete);
 
 module.exports = router;

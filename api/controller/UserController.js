@@ -3,29 +3,39 @@ const User = require('../model/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const KEY = process.env.JWT_KEY
+const validator = require('validator')
 
 exports.user_register = async (req, res, next) => {
     const password = await bcrypt.hash(req.body.password, 11)
-    newUser = new User({
-        nim: req.body.nim,
-        password: password,
-        name: req.body.name,
-        prodi: req.body.prodi,
-        jurusan: req.body.jurusan,
-        faculty: req.body.faculty
-    })
 
-    User.create(newUser)
-        .then(result => {
-            res.status(200).json({
-                success: true,
-                message: "user registered"
+    const email = validator.isEmail(req.body.email)
+    if (!email) {
+        res.status(401).json({
+            success: false,
+            message: "email not valid"
+        })
+    } else {
+        newUser = new User({
+            nim: req.body.nim,
+            password: password,
+            name: req.body.name,
+            prodi: req.body.prodi,
+            jurusan: req.body.jurusan,
+            faculty: req.body.faculty,
+            email: req.body.email
+        })
+
+        User.create(newUser)
+            .then(result => {
+                res.status(200).json({
+                    success: true,
+                    message: "user registered"
+                })
             })
-        })
-        .catch(err => {
-            res.status(401).send(err)
-        })
-
+            .catch(err => {
+                res.status(401).send(err)
+            })
+    }
 }
 
 exports.user_login = (req, res, next) => {
@@ -44,6 +54,7 @@ exports.user_login = (req, res, next) => {
                     _id: user._id,
                     nim: user.nim,
                     is_admin: user.is_admin,
+                    email: user.email,
                     exp: Math.floor(Date.now() / 1000) + (60 * 60)
                 }
 

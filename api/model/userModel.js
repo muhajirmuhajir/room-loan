@@ -34,6 +34,9 @@ const userSchema = new Schema({
     is_admin: {
         type: Boolean,
         default: false
+    },
+    email: {
+        type: String
     }
 })
 

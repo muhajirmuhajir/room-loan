@@ -91,14 +91,16 @@ module.exports = {
     imageUpload: uploadImage.single('roomfile'),
     documentUpload: uploadDocument.single('document'),
     sendEmail: (req, res, next) => {
-        console.log(req.userId);
+        const {
+            email
+        } = req.myreq
         sgMail.setApiKey(process.env.SENDGRID_API_KEY)
         const {
             is_accepted
         } = req.userId
 
         const msg = {
-            to: 'hajir.nf@gmail.com',
+            to: email,
             from: {
                 name: 'PEMINJAMAN RUANGAN',
                 email: 'noreply@room-loan.com'
